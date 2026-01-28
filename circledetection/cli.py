@@ -131,11 +131,7 @@ def transform(video_path, trajectory_csv, output_dir, no_rotation, annotate, smo
 
     Example: circledetect transform video.mp4 trajectory.csv --no-rotation
     """
-    # Import here to avoid circular imports
-    import sys
-    sys.path.insert(0, str(Path(__file__).parent.parent / 'scripts'))
-    from transform_to_particle_frame import transform_video_to_particle_frame
-    from config import get_csv_path, get_video_path
+    from .transform import transform_video_to_particle_frame
 
     click.echo(f"Transforming video: {video_path}")
     click.echo(f"Using trajectory: {trajectory_csv}")
@@ -145,10 +141,15 @@ def transform(video_path, trajectory_csv, output_dir, no_rotation, annotate, smo
     else:
         click.echo("Mode: Center + rotate to align velocity")
 
+    # Set output directory
+    if output_dir is None:
+        output_dir = './results'
+
     # Call transformation function
     transform_video_to_particle_frame(
         video_path,
         trajectory_csv,
+        output_dir=output_dir,
         velocity_smoothing_window=smooth_window,
         annotate=annotate,
         apply_rotation=not no_rotation
@@ -284,13 +285,12 @@ def auto(video_path, diameter, smooth, smooth_window, no_rotation, output_dir):
     # Step 3: Transform video
     click.echo(f"\n[3/3] Transforming to particle frame (rotation: {not no_rotation})...")
 
-    import sys
-    sys.path.insert(0, str(Path(__file__).parent.parent / 'scripts'))
-    from transform_to_particle_frame import transform_video_to_particle_frame
+    from .transform import transform_video_to_particle_frame
 
     transform_video_to_particle_frame(
         video_path,
         str(traj_csv),
+        output_dir=str(output_dir),
         velocity_smoothing_window=5,
         annotate=True,
         apply_rotation=not no_rotation

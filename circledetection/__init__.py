@@ -13,6 +13,7 @@ from .detection import detect_circle_robust
 from .tracking import extract_trajectory, KalmanTracker
 from .smoothing import smooth_trajectory
 from .visualization import plot_trajectory
+from .transform import transform_video_to_particle_frame
 
 __all__ = [
     'detect_circle_robust',
@@ -20,4 +21,5 @@ __all__ = [
     'KalmanTracker',
     'smooth_trajectory',
     'plot_trajectory',
+    'transform_video_to_particle_frame',
 ]
